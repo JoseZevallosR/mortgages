@@ -19,8 +19,25 @@
 		</div>
 
 	</div>
-	{% if uploaded_file_url %}
-    	<p>File uploaded at: <a href="{{ uploaded_file_url }}">{{ uploaded_file_url }}</a></p>
-  	{% endif %}
+	</br>
+	
+	<div class="row">
+		{% if tables %}
+	    	{{tables|safe}}
+	  	{% endif %}
+  	</div>
+
+
+
 
 {% endblock %}
+
+<script>
+	$(document).ready(function(){
+		$(document).on("click",".editable",function(){
+			var value=$(this).text();
+			var input ="<input type='text' value='"+value+"' class='form-control'>";
+			$(this).html(input);
+		})
+	});
+</script>
