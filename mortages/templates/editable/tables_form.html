@@ -28,16 +28,18 @@
   	</div>
 
 
-
-
-{% endblock %}
-
+<script src=
+"https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
+</script>
 <script>
 	$(document).ready(function(){
-		$(document).on("click",".editable",function(){
+		$(document).on("dblclick",".editable",function(){
 			var value=$(this).text();
 			var input ="<input type='text' value='"+value+"' class='form-control'>";
 			$(this).html(input);
+			$(this).removeClass("editable")
 		})
 	});
 </script>
+
+{% endblock %}
