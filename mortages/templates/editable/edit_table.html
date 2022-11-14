@@ -1,0 +1,81 @@
+{% extends 'framework/base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+	<div class="row">
+		<div class="col-4">
+			<h1 class="text-center">Upload your file</h1>
+
+			<div class="row">
+				{% if tables %}
+	    			{{tables|safe}}
+	  			{% endif %}
+			</div>
+
+			<form action="" method=POST enctype="multipart/form-data">
+				{% csrf_token %}
+
+				<input type ='hidden' name='df' id='df_val'>
+				<button name="read_tt" class="btn btn-primary">Read Table</button>
+
+			</form>
+
+			
+		</div>
+
+	</div>
+	</br>
+	
+	
+		
+  	
+
+
+<script src=
+"https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+
+<script>
+	$(document).ready(function(){
+		$(document).on("dblclick",".editable",function(){
+			var value=$(this).text();
+			var input ="<input type='text' value='"+value+"' class='form-control'>";
+			$(this).html(input);
+			$(this).removeClass("editable")
+		})
+	});
+
+	function read_table(){
+		var table = document.getElementById("time_dis");
+		var data =[];
+		var headers = [];
+		for (var i = 0, row; row = table.rows[i]; i++) {
+		   for (var j = 0, col; col = row.cells[j]; j++) {
+
+		   	  var rowData = {};
+
+		   	  if (i==0){
+		   	  	headers[j]=col.childNodes[0].nodeValue;
+		   	  } else {
+		   	  	rowData[headers[j]]=col.childNodes[0].nodeValue;
+		   	  	data.push(rowData);
+		   	  }	
+		      
+		   }
+
+		}
+	console.log(data);
+	document.getElementById('df_val').value = JSON.stringify({ "name": name.value, "email": email.value });
+	return data;
+	}
+	const btn = document.querySelector('button');
+	btn.addEventListener("click", read_table); 
+
+	
+
+</script>
+
+{% endblock %}
