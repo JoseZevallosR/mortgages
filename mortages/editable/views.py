@@ -3,6 +3,8 @@ from django.http import HttpResponse
 from django.views import View
 from .forms import tablesForm
 
+import json
+
 import pandas as pd
 # Create your views here.
 #https://docs.djangoproject.com/en/4.1/topics/class-based-views/intro/
@@ -53,6 +55,6 @@ class MyEdit(View):
 	def post(self,request,*args, **kwargs):
 		
 		ctx = {}
-		print(request.POST['df'])
+		print(self.request.POST)
 		
 		return render(request, self.template_name, ctx)

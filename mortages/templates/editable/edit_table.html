@@ -8,17 +8,19 @@
 		<div class="col-4">
 			<h1 class="text-center">Upload your file</h1>
 
-			<div class="row">
+			
+
+			<form action="" id="post-form" method=POST enctype="multipart/form-data">
+				{% csrf_token %}
+
+				<div class="row">
 				{% if tables %}
 	    			{{tables|safe}}
 	  			{% endif %}
-			</div>
+				</div>
 
-			<form action="" method=POST enctype="multipart/form-data">
-				{% csrf_token %}
-
-				<input type ='hidden' name='df' id='df_val'>
-				<button name="read_tt" class="btn btn-primary">Read Table</button>
+				<input type="hidden" name="df" value="valor!"/>
+				<button type = "submit" class="btn btn-primary">Read Table</button>
 
 			</form>
 
@@ -42,13 +44,39 @@
 	$(document).ready(function(){
 		$(document).on("dblclick",".editable",function(){
 			var value=$(this).text();
-			var input ="<input type='text' value='"+value+"' class='form-control'>";
+			var input ="<input type='text' class='input-data' value='"+value+"' class='form-control'>";
 			$(this).html(input);
 			$(this).removeClass("editable")
 		})
 	});
 
-	function read_table(){
+	$(document).on("blur",".input-data",function()
+		{
+			var value = $(this).val();
+			var td = $(this).parent("td");
+			$(this).remove();
+			td.html(value);
+			console.log("esta funcionando");
+		});
+
+	$(document).on("keypress",".input-data",function(e)
+		{
+			var key = e.which;
+			if (key == 13)
+			{
+				var value = $(this).val();
+				var td = $(this).parent("td");
+				$(this).remove();
+				td.html(value);
+				td.addClass("editable");
+			}
+			
+			console.log("esta funcionando2");
+		});
+
+
+	function read_table()
+	{
 		var table = document.getElementById("time_dis");
 		var data =[];
 		var headers = [];
@@ -67,12 +95,26 @@
 		   }
 
 		}
-	console.log(data);
-	document.getElementById('df_val').value = JSON.stringify({ "name": name.value, "email": email.value });
-	return data;
+		$("#df").val()=data;
+		return data;
 	}
-	const btn = document.querySelector('button');
-	btn.addEventListener("click", read_table); 
+
+
+
+	$("#post-form").on("click","#submit",function (e)
+		{
+		
+		e.preventDefault();
+		var data =read_table();
+		$.ajax({
+                type:'POST',
+                url:'{% url "edit" %}',
+                data:{'data':JSON.stringify(data)},
+                success: function(){}
+            })
+
+
+	});
 
 	
 
